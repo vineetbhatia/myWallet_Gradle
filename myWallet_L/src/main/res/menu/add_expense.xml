@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--<item-->
+        <!--android:id="@+id/action_add_expense"-->
+        <!--android:icon="@drawable/ic_add_holo_light"-->
+        <!--android:orderInCategory="1"-->
+        <!--android:showAsAction="always"-->
+        <!--android:title="@string/action_add_expense">
+    </item>-->
+    <item
+        android:id="@+id/action_set_custom_date"
+        android:orderInCategory="2"
+        app:showAsAction="never"
+        android:title="@string/action_set_custom_date">
+    </item>
+    <item
+        android:id="@+id/action_remove_custom_date"
+        android:orderInCategory="2"
+        app:showAsAction="never"
+        android:title="@string/action_remove_custom_date"
+        android:visible="false">
+    </item>
+    <item
+        android:id="@+id/action_add_new_payee"
+        android:orderInCategory="3"
+        app:showAsAction="never"
+        android:title="@string/action_add_new_payee">
+    </item>
+    <item
+        android:id="@+id/action_add_all_previous_payees"
+        android:orderInCategory="4"
+        app:showAsAction="never"
+        android:title="@string/action_add_all_previous_payees">
+    </item>
+    <item
+        android:id="@+id/action_clear_all_selected_payee"
+        android:orderInCategory="5"
+        app:showAsAction="never"
+        android:title="@string/action_clear_all_selected_payee">
+    </item>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/action_settings">
+    </item>
+
+</menu>

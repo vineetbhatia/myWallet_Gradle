@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/layout_parent"
+    style="@style/AppBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/edit_text_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="right"
+        android:hint="@string/amount_field_hint"
+        android:imeOptions="actionNext"
+        android:inputType="numberSigned">
+
+        <requestFocus/>
+    </EditText>
+
+    <EditText
+        android:id="@+id/edit_text_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/description_field_hint"
+        android:imeOptions="actionNext"
+        android:inputType="textCapWords"/>
+
+    <FrameLayout
+        android:id="@+id/layout_payers_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/editTextBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone">
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/text_view_add_payer_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/payer_field_hint"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <GridView
+            android:id="@+id/grid_view_selected_payers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="4"
+            android:visibility="gone">
+
+        </GridView>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_payees_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/editTextBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/text_view_add_payee_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/payee_field_hint"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <GridView
+            android:id="@+id/grid_view_selected_payees"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="4"
+            android:visibility="gone">
+        </GridView>
+
+    </FrameLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleInverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/text_view_no_payee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:drawableRight="@drawable/btn_add_payee"
+        android:gravity="center"
+        android:text="@string/no_payee_message"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridView
+            android:id="@+id/grid_view_all_payees"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:visibility="gone">
+        </GridView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_save_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_tick"
+            app:backgroundTint="@color/add_button_color"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"/>
+
+    </FrameLayout>
+</LinearLayout>

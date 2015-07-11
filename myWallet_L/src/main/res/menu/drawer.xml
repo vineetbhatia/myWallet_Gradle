@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_my_wallet"
+            android:checked="true"
+            android:icon="@drawable/ic_my_wallet"
+            android:title="@string/my_wallet"/>
+        <item
+            android:id="@+id/action_my_event"
+            android:icon="@drawable/ic_my_event"
+            android:title="@string/my_event"/>
+        <item
+            android:id="@+id/action_edit_payee"
+            android:icon="@drawable/ic_edit"
+            android:title="@string/edit_payee_title"/>
+        <item
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/action_settings"/>
+    </group>
+</menu>

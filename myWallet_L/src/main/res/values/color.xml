@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="light_grey">#F8F8F8</color>
+    <color name="status_bar_color">#3B217B</color>
+    <color name="status_bar_alpha">#11FFFFFF</color>
+    <color name="action_bar_color">#512DA8</color>
+    <color name="notification_bar_color">#03BCD4</color>
+    <color name="add_button_color">#E7E83D</color>
+    <color name="add_button_pressed">#139977</color>
+    <color name="unpaid_tab_color">#E7E83D</color>
+    <color name="paid_tab_color">#03BCD4</color>
+</resources>
+

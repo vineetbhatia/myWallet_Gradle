@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    package="com.walletv2.activity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:versionCode="5"
+    android:versionName="5.1.2">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/WalletAppBaseTheme"
+        tools:replace="icon, label, theme">
+        <activity
+            android:name=".HomeActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DrawerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/DrawerBaseTheme">
+        </activity>
+        <activity
+            android:name=".EditPayeeActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="@string/edit_payee_title"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".AddExpenseActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:icon="@drawable/add_expense_icon"
+            android:label="@string/add_expense_title"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ExpenseListActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="@string/expense_list_title"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".IntroductionActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="@string/Introduction"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".ReckonUpActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="@string/reckon_up_title"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="@string/setting_activity_title"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".AddShortcutActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:icon="@drawable/add_expense_icon"
+            android:label="@string/add_shortcut_activity_title"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="group.pals.android.lib.ui.lockpattern.LockPatternActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <service android:name="com.walletv2.services.ScheduleService"/>
+        <service android:name="com.walletv2.services.NotifyService"/>
+    </application>
+
+</manifest>

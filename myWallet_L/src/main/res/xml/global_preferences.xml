@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/export_import" >
+        <SwitchPreference
+            android:key="prefs_secure_app_key"
+            android:title="@string/prefs_secure_app_title" android:summaryOn="@string/prefs_secure_app_summary_on" android:summaryOff="@string/prefs_secure_app_summary_off"/>
+        
+        <SwitchPreference
+            android:key="prefs_automatic_backup_key"
+            android:summary="@string/prefs_automatic_backup_summary"
+            android:title="@string/prefs_automatic_backup_title" />
+
+        <ListPreference
+            android:key="prefs_no_of_backups_key"
+            android:summary="@string/prefs_no_of_backups_summary"
+            android:title="@string/prefs_no_of_backups_title" android:entryValues="@array/entries_no_of_backups" android:entries="@array/entries_no_of_backups"/>
+
+        <Preference
+            android:key="prefs_export_key"
+            android:summary="@string/prefs_export_summary"
+            android:title="@string/prefs_export_title" />
+        <Preference
+            android:key="prefs_import_key"
+            android:summary="@string/prefs_import_summary"
+            android:title="@string/prefs_import_title" />
+        <Preference
+            android:key="@string/prefs_profile_info_key"
+            android:summary="@string/introduction_message"
+            android:title="@string/prefs_profile_info_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

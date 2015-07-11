@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:paddingLeft="10dp">
+
+    <TextView
+        android:id="@+id/text_view_payee_name"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/listPreferredItemHeight"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:paddingLeft="@dimen/listPreferredItemPaddingLeft"
+        android:text="Payee"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/image_button_edit_payee"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="5dp"
+        android:src="@drawable/ic_edit_holo_light"/>
+
+    <ImageView
+        android:id="@+id/image_button_delete_payee"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="5dp"
+        android:src="@drawable/ic_delete_holo_light"/>
+
+</LinearLayout>

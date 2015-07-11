@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/androidlockpattern/androidlockpattern.iml" filepath="$PROJECT_DIR$/androidlockpattern/androidlockpattern.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myWallet_Gradle.iml" filepath="$PROJECT_DIR$/myWallet_Gradle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myWallet_L/myWallet_L.iml" filepath="$PROJECT_DIR$/myWallet_L/myWallet_L.iml" />
+    </modules>
+  </component>
+</project>

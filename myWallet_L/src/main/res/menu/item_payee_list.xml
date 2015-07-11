@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_mark_all_as_paid"
+        android:orderInCategory="1"
+        android:title="@string/action_mark_all_as_paid"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_remind_me"
+        android:orderInCategory="2"
+        android:title="@string/action_remind_me"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_remind_payee"
+        android:orderInCategory="3"
+        android:title="@string/action_remind_me"
+        app:showAsAction="never"/>
+
+</menu>

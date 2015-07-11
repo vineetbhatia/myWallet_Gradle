@@ -1,0 +1,2 @@
+include ':androidlockpattern'
+include ':myWallet_L'
