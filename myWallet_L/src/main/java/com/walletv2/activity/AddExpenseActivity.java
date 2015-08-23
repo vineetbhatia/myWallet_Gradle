@@ -469,6 +469,9 @@ public class AddExpenseActivity extends BaseActivity {
         } else if (Integer.parseInt(expenseDetails.getAmount()) == 0) {
             flag = false;
             toastString = toastString + "Please enter a valid amount.";
+        } else if (!isWalletExpense && Integer.parseInt(expenseDetails.getAmount()) < 0) {
+            flag = false;
+            toastString = toastString + "Please enter a positive amount for an event expense.";
         }
         if (expenseDetails.getPayeesList().equals("")) {
             flag = false;
@@ -524,7 +527,8 @@ public class AddExpenseActivity extends BaseActivity {
                         databaseHandler.insertEventExpenseData(expenseDetails);
                 }
                 Log.i("MyWallet",
-                        "New Expense Details: " + expenseDetails.toString() + "\nCustomDate: " + Utils.getFormattedDateFromMillies("" + getSetCustomDate()));
+                      "New Expense Details: " + expenseDetails.toString() + "\nCustomDate: " +
+                      Utils.getFormattedDateFromMillies("" + getSetCustomDate()));
                 setResult(Activity.RESULT_OK);
                 finish();
             }
@@ -564,8 +568,9 @@ public class AddExpenseActivity extends BaseActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             customDate = Calendar.getInstance();
-                            customDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(),
-                                    timePicker.getCurrentMinute(), 0);
+                            customDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
+                                           timePicker.getCurrentHour(),
+                                           timePicker.getCurrentMinute(), 0);
                             dialog.dismiss();
                         }
                     }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

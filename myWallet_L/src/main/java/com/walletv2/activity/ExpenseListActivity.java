@@ -65,7 +65,6 @@ public class ExpenseListActivity extends BaseActivity {
     private ScheduleClient scheduleClient;
     private AlarmDetails alarmDetails;
     private ShareActionProvider mShareActionProvider;
-    private String shareText;
     private boolean mDataChanged;
     private SlidingTabLayout mTabLayout;
     private boolean isUnpaidExpenseListEmpty = false;
@@ -120,7 +119,8 @@ public class ExpenseListActivity extends BaseActivity {
             if (bundle.getBoolean(Constants.EXTRA_VALUE_IS_SHOW_PAID)) {
                 mViewPager.addOnLayoutChangeListener(new OnLayoutChangeListener() {
                     @Override
-                    public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop,
+                                               int oldRight, int oldBottom) {
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
 
@@ -182,12 +182,12 @@ public class ExpenseListActivity extends BaseActivity {
             case R.id.action_mark_all_as_paid:
                 AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
                 builder.setTitle(R.string.dialog_mark_all_as_paid_for_one_payee_message)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                new PerformItemMenuAction(R.id.action_mark_all_as_paid).execute();
-                            }
-                        }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                       .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int id) {
+                               new PerformItemMenuAction(R.id.action_mark_all_as_paid).execute();
+                           }
+                       }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                     }
@@ -206,74 +206,96 @@ public class ExpenseListActivity extends BaseActivity {
     }
 
     private void setShareIntent() {
+        String shareText;
         if (isWalletList)
-            setWalletShareText();
+            shareText = setWalletShareText();
         else
-            setEventShareText();
+            shareText = setEventShareText();
         Log.i("MyWallet", "setShareIntent is called");
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
         shareIntent.setType("text/plain");
         if (mShareActionProvider != null) {
-            Log.i("MyWallet", "mShareActionProvider is not null");
-            Log.i("MyWallet", "mShareActionProvider ShareText-\n" + shareText);
+            Log.i("MyWallet", "mShareActionProvider share text-\n" + shareText);
             mShareActionProvider.setShareIntent(shareIntent);
         }
     }
 
-    public void setWalletShareText() {
-        shareText = "After reckoning up:";
-        int amount = 0;
-        shareText += "\n" + "I will get an amount of Rs xxx in total from " + payeeName + ".";
+    public String setWalletShareText() {
+        int totalAmount = 0;
+        String shareText = "";
         for (ExpenseDetails expenseDetails : unPaidExpenseList) {
-            int amountForThisExpense = Integer.parseInt(expenseDetails.getAmount()) / Utils.getPayeeCountFromPayees(expenseDetails.getPayeesList());
-            if (amountForThisExpense < 0)
-                shareText += "\n" + "- I will give " + payeeName + " Rs " + String.valueOf(Math.abs(amountForThisExpense))
-                        + " for " + expenseDetails.getDescription() + " spent at " + Utils.getFormattedDateFromMillies(expenseDetails.getDate());
-            else
-                shareText += "\n" + "- " + payeeName + " will give me Rs " + String.valueOf(Math.abs(amountForThisExpense))
-                        + " for " + expenseDetails.getDescription() + " spent at " + Utils.getFormattedDateFromMillies(expenseDetails.getDate());
+            int amountForThisExpense =
+                    Integer.parseInt(expenseDetails.getAmount()) / Utils.getPayeeCountFromPayees(expenseDetails.getPayeesList());
+            String subject, predicate;
+            if (amountForThisExpense < 0) {
+                subject = "I";
+                predicate = payeeName;
+            } else {
+                subject = payeeName;
+                predicate = "me";
+            }
 
-            amount += amountForThisExpense;
+            shareText +=
+                    getString(R.string.expense_list_share_text_02, subject, predicate, Math.abs(amountForThisExpense),
+                              expenseDetails.getDescription().trim().equals("") ? "" :
+                                      " for " + expenseDetails.getDescription().trim(),
+                              Utils.getFormattedDateFromMillies(expenseDetails.getDate()));
+
+            totalAmount += amountForThisExpense;
         }
-        if (amount < 0)
-            shareText = shareText.replaceFirst("I", payeeName);
-        shareText = shareText.replaceFirst("xxx", String.valueOf(Math.abs(amount)));
+        String subject, predicate;
+        if (totalAmount > 0) {
+            subject = "I";
+            predicate = payeeName;
+        } else {
+            subject = payeeName;
+            predicate = "me";
+        }
+        shareText = getString(R.string.expense_list_share_text_01, subject, Math.abs(totalAmount), predicate) + shareText;
 
-        shareText += "\n-shared from MyWallet";
+        shareText += getString(R.string.share_text_footer);
+        return shareText;
     }
 
-    public void setEventShareText() {
-        shareText = payeeName + "'s expenses for " + eventName + ":";
+    public String setEventShareText() {
         int amount = 0;
-        shareText += "\n" + payeeName + " spent an amount of Rs xxx in total";
+        String expenseShareText = "";
         for (ExpenseDetails expenseDetails : unPaidExpenseList) {
             int amountForThisExpense = Integer.parseInt(expenseDetails.getAmount());
-            if (amountForThisExpense < 0)
-                shareText += "\n" + "- " + expenseDetails.getPayeesList() + " spent an amount of Rs " + String.valueOf(Math.abs(amountForThisExpense)) + " for " + payeeName
-                        + " for " + expenseDetails.getDescription() + " at " + Utils.getFormattedDateFromMillies(expenseDetails.getDate());
-            else
-                shareText += "\n" + "- " + payeeName + " spent an amount of Rs " + String.valueOf(Math.abs(amountForThisExpense)) + " for " + expenseDetails.getPayeesList()
-                        + " for " + expenseDetails.getDescription() + " at " + Utils.getFormattedDateFromMillies(expenseDetails.getDate());
+
+            expenseShareText += getString(R.string.event_expense_list_share_text_04, payeeName, Math.abs(amountForThisExpense),
+                                          expenseDetails.getPayeesList(), expenseDetails.getDescription().trim().equals("") ? "" :
+                                                  " for " + expenseDetails.getDescription().trim(),
+                                          Utils.getFormattedDateFromMillies(expenseDetails.getDate()));
 
             amount += amountForThisExpense;
         }
-        shareText = shareText.replaceFirst("xxx", String.valueOf(amount));
+        expenseShareText =
+                getString(R.string.event_expense_list_share_text_01, payeeName, eventName, payeeName, amount) + expenseShareText;
 
-        shareText += "\n\nExpenses spent on " + payeeName + " for " + eventName + ":";
+        String spentOnShareText = "";
         int amountSpentOn = 0;
-        shareText += "\n" + "An amount of Rs xxx was spent in total on " + payeeName;
         for (ExpenseDetails expenseDetails : paidExpenseList) {
-            int amountForThisExpense = Integer.parseInt(expenseDetails.getAmount()) / Utils.getPayeeCountFromPayees(expenseDetails.getPayeesList());
-            shareText += "\n" + "- " + "An amount of Rs " + String.valueOf(Math.abs(amountForThisExpense)) + " was spent on " + payeeName + " by " + expenseDetails.getPayersList()
-                    + " for " + expenseDetails.getDescription() + " at " + Utils.getFormattedDateFromMillies(expenseDetails.getDate());
+            if (!payeeName.equals(expenseDetails.getPayersList())) {
+                int amountForThisExpense =
+                        Integer.parseInt(expenseDetails.getAmount()) / Utils.getPayeeCountFromPayees(expenseDetails.getPayeesList());
 
-            amountSpentOn += amountForThisExpense;
+                spentOnShareText += getString(R.string.event_expense_list_share_text_03, Math.abs(amountForThisExpense),
+                                              expenseDetails.getPayersList(), payeeName,
+                                              expenseDetails.getDescription().trim().equals("") ? "" :
+                                                      " for " + expenseDetails.getDescription().trim(),
+                                              Utils.getFormattedDateFromMillies(expenseDetails.getDate()));
+
+                amountSpentOn += amountForThisExpense;
+            }
         }
-        shareText = shareText.replaceFirst("xxx", String.valueOf(amountSpentOn));
+        spentOnShareText = getString(R.string.event_expense_list_share_text_02, payeeName, eventName, amountSpentOn, payeeName) +
+                           spentOnShareText;
 
-        shareText += "\n-shared from MyWallet";
+        spentOnShareText += getString(R.string.share_text_footer);
+        return expenseShareText + spentOnShareText;
     }
 
     private void launchEditExpenseActivity(String expenseDate) {
@@ -338,9 +360,9 @@ public class ExpenseListActivity extends BaseActivity {
                 paidExpensePayeeListAdapter.notifyDataSetChanged();
             }
             if (null == mExpenseListPagerAdapter || (isUnpaidExpenseListEmpty && unPaidExpenseList.size() > 0)
-                    || (!isUnpaidExpenseListEmpty && unPaidExpenseList.size() == 0)
-                    || (isPaidExpenseListEmpty && paidExpenseList.size() > 0)
-                    || (!isPaidExpenseListEmpty && paidExpenseList.size() == 0)) {
+                || (!isUnpaidExpenseListEmpty && unPaidExpenseList.size() == 0)
+                || (isPaidExpenseListEmpty && paidExpenseList.size() > 0)
+                || (!isPaidExpenseListEmpty && paidExpenseList.size() == 0)) {
                 setUpViewPagerAndTabs();
             } else
                 mExpenseListPagerAdapter.notifyDataSetChanged();
@@ -418,7 +440,8 @@ public class ExpenseListActivity extends BaseActivity {
                 else
                     textResId = R.string.no_payer_expense_msg;
 
-                rootView = getDefaultListFragmentView(inflater, container, unPaidExpenseList, unpaidExpensePayeeListAdapter, textResId);
+                rootView =
+                        getDefaultListFragmentView(inflater, container, unPaidExpenseList, unpaidExpensePayeeListAdapter, textResId);
             } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
                 int textResId;
                 if (isWalletList)
@@ -502,9 +525,11 @@ public class ExpenseListActivity extends BaseActivity {
                 if (payeeCount > 1)
                     amount = String.valueOf(Integer.parseInt(amount) / payeeCount);
                 holder.textViewAmount.setText(amount);
-                holder.textViewOriginalPayeeList.setPaintFlags(holder.textViewOriginalPayeeList.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                if ((payeeCount == 1 && expenseDetails.getPayersList() != null && Utils.getPayeeCountFromPayees(expenseDetails.getPayersList()) == 1)
-                        || expenseDetails.getPayersList() == null || expenseDetails.getPayersList().equals("")) {
+                holder.textViewOriginalPayeeList
+                        .setPaintFlags(holder.textViewOriginalPayeeList.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                if ((payeeCount == 1 && expenseDetails.getPayersList() != null &&
+                     Utils.getPayeeCountFromPayees(expenseDetails.getPayersList()) == 1)
+                    || expenseDetails.getPayersList() == null || expenseDetails.getPayersList().equals("")) {
                     holder.linearLayoutOriginal.setVisibility(View.GONE);
                     holder.textViewPayeeList.setVisibility(View.VISIBLE);
                     holder.textViewPayeeList.setText(expenseDetails.getPayeesList());
@@ -512,7 +537,8 @@ public class ExpenseListActivity extends BaseActivity {
                     if (payeeCount > 1 && expenseDetails.getPayersList().equalsIgnoreCase(expenseDetails.getPayeesList()))
                         holder.textViewPayeeList.setVisibility(View.GONE);
                     else {
-                        holder.textViewOriginalPayeeList.setPaintFlags(holder.textViewOriginalPayeeList.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        holder.textViewOriginalPayeeList
+                                .setPaintFlags(holder.textViewOriginalPayeeList.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         holder.textViewPayeeList.setVisibility(View.VISIBLE);
                         holder.textViewPayeeList.setText(expenseDetails.getPayeesList());
                     }
@@ -676,13 +702,14 @@ public class ExpenseListActivity extends BaseActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             Builder builder = new Builder(getActivity());
-            builder.setTitle(R.string.dialog_delete_expense_message).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    performItemMenuAction = new PerformItemMenuAction(R.id.action_delete_expense, expenseDetails, isUnpaid);
-                    performItemMenuAction.execute();
-                }
-            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.dialog_delete_expense_message)
+                   .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int id) {
+                           performItemMenuAction = new PerformItemMenuAction(R.id.action_delete_expense, expenseDetails, isUnpaid);
+                           performItemMenuAction.execute();
+                       }
+                   }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
                 }
@@ -714,8 +741,9 @@ public class ExpenseListActivity extends BaseActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             customDate = Calendar.getInstance();
-                            customDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(),
-                                    timePicker.getCurrentMinute(), 0);
+                            customDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
+                                           timePicker.getCurrentHour(),
+                                           timePicker.getCurrentMinute(), 0);
                             setAlarmReminder(customDate);
                             dialog.dismiss();
                         }
@@ -733,27 +761,32 @@ public class ExpenseListActivity extends BaseActivity {
         alarmDetails.setCalender(date);
         scheduleClient.setAlarmForNotification(alarmDetails);
         // Notify the user what they just did
-        Toast.makeText(mActivity, "Notification set for: " + Utils.getFormattedDateFromMillies(date.getTimeInMillis() + ""), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mActivity, "Notification set for: " + Utils.getFormattedDateFromMillies(date.getTimeInMillis() + ""),
+                       Toast.LENGTH_SHORT).show();
     }
 
     private void setAlarmDetails(ExpenseDetails expenseDetails, String payee) {
         String notificationContent;
         int payeeCount = Utils.getPayeeCountFromPayees(expenseDetails.getPayeesList());
         if (expenseDetails.getAmount().startsWith("-")) {
-            notificationContent = "Hey, remember *payee* paid *amount* bucks*tag**date**description*. You might wanna remind your friend that you will give it back.";
+            notificationContent =
+                    "Hey, remember *payee* paid *amount* bucks*tag**date**description*. You might wanna remind your friend that you will give it back.";
             notificationContent = notificationContent.replace("*payee*", payee);
             notificationContent = notificationContent.replace("*tag*", " for you ");
         } else {
-            notificationContent = "Hey, remember *payee* paid *amount* bucks*tag**date**description*. You might wanna remind your friend to give it back.";
+            notificationContent =
+                    "Hey, remember *payee* paid *amount* bucks*tag**date**description*. You might wanna remind your friend to give it back.";
             notificationContent = notificationContent.replace("*tag*", " for " + payee) + " ";
             notificationContent = notificationContent.replace("*payee*", "you");
         }
         if (payeeCount > 1) {
-            notificationContent = notificationContent.replace("*amount*", Math.abs(Integer.parseInt(expenseDetails.getAmount()) / payeeCount) + "");
+            notificationContent =
+                    notificationContent.replace("*amount*", Math.abs(Integer.parseInt(expenseDetails.getAmount()) / payeeCount) + "");
         } else {
             notificationContent = notificationContent.replace("*amount*", expenseDetails.getAmount().replace("-", ""));
         }
-        notificationContent = notificationContent.replace("*date*", " on " + Utils.getFormattedDateFromMillies(expenseDetails.getDate()));
+        notificationContent =
+                notificationContent.replace("*date*", " on " + Utils.getFormattedDateFromMillies(expenseDetails.getDate()));
         notificationContent = notificationContent.replace("*description*", " for " + expenseDetails.getDescription());
         alarmDetails = new AlarmDetails();
         alarmDetails.setNotificationTitle("It's about money!!!");

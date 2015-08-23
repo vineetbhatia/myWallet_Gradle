@@ -156,13 +156,14 @@ public class PayeeListFragment extends BaseFragment {
                 break;
             case R.id.action_mark_all_payees_as_paid:
                 AlertDialog.Builder builder = new AlertDialog.Builder(mParentActivity);
-                builder.setTitle(R.string.dialog_mark_all_as_paid_for_all_payee_message).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        performItemMenuAction = new PerformItemMenuAction(item.getItemId());
-                        performItemMenuAction.execute();
-                    }
-                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                builder.setTitle(R.string.dialog_mark_all_as_paid_for_all_payee_message)
+                       .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int id) {
+                               performItemMenuAction = new PerformItemMenuAction(item.getItemId());
+                               performItemMenuAction.execute();
+                           }
+                       }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                     }
@@ -216,9 +217,9 @@ public class PayeeListFragment extends BaseFragment {
             // Create the adapter that will return a fragment for each of the
             // three primary sections of the app.
             if (mPayeeListPagerAdapter == null || (isUnpaidPayeeListEmpty && unPaidPayeeList.size() > 0)
-                    || (!isUnpaidPayeeListEmpty && unPaidPayeeList.size() == 0)
-                    || (isWalletList && isPaidPayeeListEmpty && paidPayeeList.size() > 0)
-                    || (isWalletList && !isPaidPayeeListEmpty && paidPayeeList.size() == 0)) {
+                || (!isUnpaidPayeeListEmpty && unPaidPayeeList.size() == 0)
+                || (isWalletList && isPaidPayeeListEmpty && paidPayeeList.size() > 0)
+                || (isWalletList && !isPaidPayeeListEmpty && paidPayeeList.size() == 0)) {
                 setUpViewPagerAndTabs();
             } else {
                 mPayeeListPagerAdapter.notifyDataSetChanged();
@@ -239,7 +240,8 @@ public class PayeeListFragment extends BaseFragment {
 //        mTabLayout.setLayoutMode(TabLayout.MODE_SCROLLABLE);
         mTabLayout.setViewPager(mViewPager);
         Resources resources = getResources();
-        mTabLayout.setSelectedIndicatorColors(resources.getColor(R.color.unpaid_tab_color), resources.getColor(R.color.paid_tab_color));
+        mTabLayout
+                .setSelectedIndicatorColors(resources.getColor(R.color.unpaid_tab_color), resources.getColor(R.color.paid_tab_color));
 
     }
 
@@ -302,7 +304,8 @@ public class PayeeListFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode == Constants.REQUEST_CODE_ADD_EXPENSE_LIST || requestCode == Constants.REQUEST_CODE_WALLET_EXPENSE_LIST) && resultCode == Activity.RESULT_OK) {
+        if ((requestCode == Constants.REQUEST_CODE_ADD_EXPENSE_LIST || requestCode == Constants.REQUEST_CODE_WALLET_EXPENSE_LIST) &&
+            resultCode == Activity.RESULT_OK) {
             getAllPayeeWithNonZeroExpenseAmount = new GetAllPayeeWithNonZeroExpenseAmount();
             getAllPayeeWithNonZeroExpenseAmount.execute();
         }
@@ -335,7 +338,8 @@ public class PayeeListFragment extends BaseFragment {
                     textResId = R.string.no_payer_event_msg;
                 rootView = getDefaultListFragmentView(inflater, container, unPaidPayeeList, unpaidExpensePayeeListAdapter, textResId);
             } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
-                rootView = getDefaultListFragmentView(inflater, container, paidPayeeList, paidExpensePayeeListAdapter, R.string.no_paid_expense_message);
+                rootView = getDefaultListFragmentView(inflater, container, paidPayeeList, paidExpensePayeeListAdapter,
+                                                      R.string.no_paid_expense_message);
             }
             return rootView;
         }
@@ -402,7 +406,7 @@ public class PayeeListFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             final PayeeDetails payeeDetails = getItem(position);
-            String payeeName = payeeDetails.getName();
+            final String payeeName = payeeDetails.getName();
             holder.textViewPayeeName.setText(payeeName);
             holder.textViewPayeeThumbnail.setText(payeeName.substring(0, 1).toUpperCase());
             holder.textViewPayeeThumbnail.setBackgroundResource(payeeDetails.getColorCode());
@@ -410,7 +414,7 @@ public class PayeeListFragment extends BaseFragment {
             holder.parentLayout.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    launchExpenseList(payeeDetails.getName(), !isUnpaidList);
+                    launchExpenseList(payeeName, !isUnpaidList);
                 }
             });
             if (isWalletList && isUnpaidList) {
@@ -451,13 +455,13 @@ public class PayeeListFragment extends BaseFragment {
                     case R.id.action_mark_all_as_paid:
                         AlertDialog.Builder builder = new AlertDialog.Builder(mParentActivity);
                         builder.setTitle(R.string.dialog_mark_all_as_paid_for_one_payee_message)
-                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        performItemMenuAction = new PerformItemMenuAction(item.getItemId(), payeeDetails.getName());
-                                        performItemMenuAction.execute();
-                                    }
-                                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                               .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                   @Override
+                                   public void onClick(DialogInterface dialog, int id) {
+                                       performItemMenuAction = new PerformItemMenuAction(item.getItemId(), payeeDetails.getName());
+                                       performItemMenuAction.execute();
+                                   }
+                               }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                             }
@@ -547,8 +551,9 @@ public class PayeeListFragment extends BaseFragment {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             customDate = Calendar.getInstance();
-                            customDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(),
-                                    timePicker.getCurrentMinute(), 0);
+                            customDate.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
+                                           timePicker.getCurrentHour(),
+                                           timePicker.getCurrentMinute(), 0);
                             setAlarmReminder(customDate);
                             dialog.dismiss();
                         }
@@ -565,17 +570,20 @@ public class PayeeListFragment extends BaseFragment {
         alarmDetails.setCalender(date);
         scheduleClient.setAlarmForNotification(alarmDetails);
         // Notify the user what they just did
-        Toast.makeText(mParentActivity, "Notification set for: " + Utils.getFormattedDateFromMillies(date.getTimeInMillis() + ""), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mParentActivity, "Notification set for: " + Utils.getFormattedDateFromMillies(date.getTimeInMillis() + ""),
+                       Toast.LENGTH_SHORT).show();
     }
 
     private void setAlarmDetails(PayeeDetails payeeDetails) {
         String notificationContent;
         if (Integer.parseInt(payeeDetails.getAmount()) < 0) {
-            notificationContent = "Hey, remember *payee* paid *amount* bucks*tag**date**description*. You might wanna remind your friend that you will give it back.";
+            notificationContent =
+                    "Hey, remember *payee* paid *amount* bucks*tag**date**description*. You might wanna remind your friend that you will give it back.";
             notificationContent = notificationContent.replace("*payee*", payeeDetails.getName());
             notificationContent = notificationContent.replace("*tag*", " for you ");
         } else {
-            notificationContent = "Hey, remember *payee* paid *amount* bucks*tag**date**description*. You might wanna remind your friend to give it back.";
+            notificationContent =
+                    "Hey, remember *payee* paid *amount* bucks*tag**date**description*. You might wanna remind your friend to give it back.";
             notificationContent = notificationContent.replace("*tag*", " for " + payeeDetails.getName()) + " ";
             notificationContent = notificationContent.replace("*payee*", "you");
         }
