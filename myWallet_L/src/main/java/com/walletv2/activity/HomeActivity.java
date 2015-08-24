@@ -56,7 +56,8 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void launchNextActivity() {
-        if (sharedPreferences.contains(Constants.SHARED_PREFERENCES_IS_INTRODUCTION_COMPLETED) && sharedPreferences.getBoolean(Constants.SHARED_PREFERENCES_IS_INTRODUCTION_COMPLETED, false))
+        if (sharedPreferences.contains(Constants.SHARED_PREFERENCES_IS_INTRODUCTION_COMPLETED) &&
+            sharedPreferences.getBoolean(Constants.SHARED_PREFERENCES_IS_INTRODUCTION_COMPLETED, false))
             launchWalletPayeeList();
         else {
             Intent intent = new Intent(mActivity, IntroductionActivity.class);
@@ -101,7 +102,8 @@ public class HomeActivity extends BaseActivity {
             // delete old preference file
             new File(mActivity.getApplicationInfo().dataDir + "/shared_prefs/" + Constants.SHARED_PREFERENCES_NAME + ".xml").delete();
             if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
-                new File(Environment.getExternalStorageDirectory().toString() + "/MyWallet/shared_prefs/" + Constants.SHARED_PREFERENCES_NAME + ".xml")
+                new File(Environment.getExternalStorageDirectory().toString() + "/MyWallet/shared_prefs/" +
+                         Constants.SHARED_PREFERENCES_NAME + ".xml")
                         .delete();
             return null;
         }
@@ -124,8 +126,8 @@ public class HomeActivity extends BaseActivity {
      */
     private void createNewPattern() {
         Toast.makeText(mActivity,
-                "Please enter the combination twice to secure the application with pattern lock. This combination will be used to unlock the application.",
-                Toast.LENGTH_LONG).show();
+                       "Please enter the combination twice to secure the application with pattern lock. This combination will be used to unlock the application.",
+                       Toast.LENGTH_LONG).show();
         Intent intent = new Intent(mActivity, LockPatternActivity.class);
         intent.putExtra(LockPatternActivity._Mode, LockPatternActivity.LPMode.CreatePattern);
         intent.putExtra(LockPatternActivity._AutoSave, true);
@@ -160,7 +162,8 @@ public class HomeActivity extends BaseActivity {
                     Toast.makeText(mActivity, "Passcode successfully set.", Toast.LENGTH_SHORT).show();
                     preferencesEditor.putBoolean(Constants.SHARED_PREFERENCES_IS_LOCK_SET, false).commit();
                 } else {
-                    Toast.makeText(mActivity, "Some problem has occurred while setting the lock. Please try again.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, "Some problem has occurred while setting the lock. Please try again.", Toast.LENGTH_LONG)
+                         .show();
                     preferencesEditor.putBoolean(getString(R.string.prefs_secure_app_key), false);
                     preferencesEditor.putBoolean(Constants.SHARED_PREFERENCES_IS_LOCK_SET, false);
                     preferencesEditor.commit();

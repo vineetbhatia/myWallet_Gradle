@@ -13,29 +13,30 @@ import java.util.Date;
 
 public class Utils {
     public static String removePayeeFromPayeeList(String payeeList, String payee) {
-        if (payeeList.contains(", " + payee + ", ")) {
-            payeeList = payeeList.replace(", " + payee + ", ", ", ");
-        } else if ((payeeList.startsWith(payee)) && (payeeList.contains(payee + ", "))) {
-            payeeList = payeeList.replaceFirst(payee + ", ", "");
-        } else if ((payeeList.endsWith(payee)) && (payeeList.contains(", " + payee))) {
-            payeeList = payeeList.substring(0, payeeList.lastIndexOf(','));
-        } else if (payeeList.equals(payee)) {
+        if (payeeList.equals(payee)) {
             payeeList = "";
+        } else if (payeeList.contains(", " + payee + ", ")) {
+            payeeList = payeeList.replace(", " + payee + ", ", ", ");
+        } else if (payeeList.startsWith(payee + ", ")) {
+            payeeList = payeeList.replaceFirst(payee + ", ", "");
+        } else if (payeeList.endsWith(", " + payee)) {
+            payeeList = payeeList.substring(0, payeeList.lastIndexOf(','));
         }
         return payeeList;
     }
 
     public static String replacePayeeFromPayeeList(String payeeList, String newPayee, String oldPayee) {
-        if (payeeList.contains(", " + oldPayee + ", ")) {
-            payeeList = payeeList.replace(oldPayee, newPayee);
-        } else if ((payeeList.startsWith(oldPayee)) && (payeeList.contains(oldPayee + ", "))) {
-            payeeList = payeeList.replaceFirst(oldPayee, newPayee);
-        } else if ((payeeList.endsWith(oldPayee)) && (payeeList.contains(", " + oldPayee))) {
-            payeeList = payeeList.replace(oldPayee, newPayee);
-        }
         if (payeeList.equals(oldPayee)) {
             payeeList = newPayee;
+        } else if (payeeList.contains(", " + oldPayee + ", ")) {
+            payeeList = payeeList.replace(", " + oldPayee + ", ", ", " + newPayee + ", ");
+        } else if (payeeList.startsWith(oldPayee + ", ")) {
+            payeeList = payeeList.replaceFirst(oldPayee + ", ", newPayee + ", ");
+        } else if (payeeList.endsWith(", " + oldPayee)) {
+            payeeList = payeeList.substring(0, payeeList.lastIndexOf(',')) +
+                        payeeList.substring(payeeList.lastIndexOf(',')).replaceFirst(", " + oldPayee, ", " + newPayee);
         }
+
         return payeeList;
     }
 
@@ -96,7 +97,8 @@ public class Utils {
     public static void remindAPayeeAboutAllExpensesViaSms(Activity context, String amount) {
         String smsBody;
         if (Integer.parseInt(amount) > 0)
-            smsBody = "Hey, remember I paid *amount* bucks*date**description*. Is there any chance I can have it, I kinda need at the moment.";
+            smsBody =
+                    "Hey, remember I paid *amount* bucks*date**description*. Is there any chance I can have it, I kinda need at the moment.";
         else
             smsBody = "Hey, remember you paid *amount* bucks*date**description*. I will return them soon.";
         smsBody = smsBody.replace("*amount*", amount.replace("-", ""));
@@ -114,12 +116,13 @@ public class Utils {
         int payeesCount = Utils.getPayeeCountFromPayees(expenseDetails.getPayeesList());
         String smsBody;
         if (Integer.parseInt(expenseDetails.getAmount()) > 0)
-            smsBody = "Hey, remember I paid *amount* bucks*date**description*. Is there any chance I can have it, I kinda need at the moment.";
+            smsBody =
+                    "Hey, remember I paid *amount* bucks*date**description*. Is there any chance I can have it, I kinda need at the moment.";
         else
             smsBody = "Hey, remember you paid *amount* bucks*date**description*. I will return them soon.";
         if (payeesCount > 1) {
             smsBody = smsBody.replace("*amount*", Math.abs(Integer.parseInt(expenseDetails.getAmount()) / payeesCount)
-                    + "");
+                                                  + "");
         } else {
             smsBody = smsBody.replace("*amount*", expenseDetails.getAmount().replace("-", ""));
         }
@@ -139,7 +142,7 @@ public class Utils {
 
     public static void restartApplication(Activity activity) {
         Intent i = activity.getBaseContext().getPackageManager()
-                .getLaunchIntentForPackage(activity.getBaseContext().getPackageName());
+                           .getLaunchIntentForPackage(activity.getBaseContext().getPackageName());
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(i);
     }

@@ -121,7 +121,8 @@ public class EditPayeeActivity extends BaseActivity {
                     .setPositiveButton(isNewPayee ? R.string.add : R.string.edit, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            if (!editTextPayeeName.getText().toString().trim().equals("")) {
+                            String s = editTextPayeeName.getText().toString().trim();
+                            if (!s.equals("") && !s.contains(",")) {
                                 if (isNewPayee)
                                     databaseHandler.insertPayee(editTextPayeeName.getText().toString().trim());
                                 else
@@ -129,7 +130,8 @@ public class EditPayeeActivity extends BaseActivity {
                                 mDataChanged = true;
                                 getAllPayees = new GetAllPayees();
                                 getAllPayees.execute();
-                            }
+                            } else
+                                Toast.makeText(EditPayeeActivity.this, "Blank & payee name with comma (,) are not allowed.", Toast.LENGTH_SHORT).show();
                         }
                     }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
@@ -150,16 +152,17 @@ public class EditPayeeActivity extends BaseActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             Builder builder = new Builder(getActivity());
-            builder.setTitle(R.string.dialog_delete_payee_message).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    if (databaseHandler.deletePayee(payeeName)) {
-                        new GetAllPayees().execute();
-                        mDataChanged = true;
-                    } else
-                        Toast.makeText(mActivity, R.string.error_payee_cannot_be_deleted, Toast.LENGTH_LONG).show();
-                }
-            }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.dialog_delete_payee_message)
+                   .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int id) {
+                           if (databaseHandler.deletePayee(payeeName)) {
+                               new GetAllPayees().execute();
+                               mDataChanged = true;
+                           } else
+                               Toast.makeText(mActivity, R.string.error_payee_cannot_be_deleted, Toast.LENGTH_LONG).show();
+                       }
+                   }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
                 }

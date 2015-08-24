@@ -56,7 +56,8 @@ public class IntroductionActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     mTagName.setHint(R.string.already_have_tag_hint);
-                    mTagName.setAdapter(new ArrayAdapter<>(IntroductionActivity.this, android.R.layout.simple_dropdown_item_1line, mTagList));
+                    mTagName.setAdapter(
+                            new ArrayAdapter<>(IntroductionActivity.this, android.R.layout.simple_dropdown_item_1line, mTagList));
                     mTagName.setThreshold(1);
                 } else {
                     mTagName.setHint(R.string.new_tag_hint);
@@ -67,7 +68,8 @@ public class IntroductionActivity extends BaseActivity {
         mContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mFirstName.getText().toString().trim().length() > 0 && mLastName.getText().toString().trim().length() > 0 && mTagName.getText().toString().trim().length() > 0)
+                if (mFirstName.getText().toString().trim().length() > 0 && mLastName.getText().toString().trim().length() > 0 &&
+                    mTagName.getText().toString().trim().length() > 0)
                     if (mTagList == null || mTagList.size() == 0)
                         savePersonalDetails(true);
                     else if (mTagList.contains(mTagName.getText().toString().trim()))
@@ -83,11 +85,10 @@ public class IntroductionActivity extends BaseActivity {
         mEditor = mSharedPreferences.edit();
         if (mSharedPreferences.contains(Constants.SHARED_PREFERENCES_PROFILE_NAME)) {
             String profileName = mSharedPreferences.getString(Constants.SHARED_PREFERENCES_PROFILE_NAME, "First Name");
-            if (profileName != null) {
-                mFirstName.setText(profileName.substring(0, profileName.lastIndexOf(' ')));
-                mLastName.setText(profileName.substring(profileName.lastIndexOf(' '), profileName.length()));
-            }
-            if (mTagList != null && mSharedPreferences.contains(Constants.SHARED_PREFERENCES_TAG_NAME) && mTagList.contains(mSharedPreferences.getString(Constants.SHARED_PREFERENCES_TAG_NAME, ""))) {
+            mFirstName.setText(profileName.substring(0, profileName.lastIndexOf(' ')));
+            mLastName.setText(profileName.substring(profileName.lastIndexOf(' '), profileName.length()));
+            if (mTagList != null && mSharedPreferences.contains(Constants.SHARED_PREFERENCES_TAG_NAME) &&
+                mTagList.contains(mSharedPreferences.getString(Constants.SHARED_PREFERENCES_TAG_NAME, ""))) {
                 mTagName.setText(mSharedPreferences.getString(Constants.SHARED_PREFERENCES_TAG_NAME, ""));
             }
         }
@@ -98,12 +99,13 @@ public class IntroductionActivity extends BaseActivity {
             if (!databaseHandler.isPayeeExists(mTagName.getText().toString().trim()))
                 databaseHandler.insertPayee(mTagName.getText().toString().trim());
             else {
-                Toast.makeText(this, "This payee already exists, kindly check the tick box and select your tag from the list", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "This payee already exists, kindly check the tick box and select your tag from the list",
+                               Toast.LENGTH_SHORT).show();
                 return;
             }
 
-
-        mEditor.putString(Constants.SHARED_PREFERENCES_PROFILE_NAME, mFirstName.getText().toString().trim() + " " + mLastName.getText().toString().trim());
+        mEditor.putString(Constants.SHARED_PREFERENCES_PROFILE_NAME,
+                          mFirstName.getText().toString().trim() + " " + mLastName.getText().toString().trim());
         mEditor.putString(Constants.SHARED_PREFERENCES_TAG_NAME, mTagName.getText().toString().trim());
         mEditor.putBoolean(Constants.SHARED_PREFERENCES_IS_INTRODUCTION_COMPLETED, true);
         mEditor.commit();
@@ -117,15 +119,15 @@ public class IntroductionActivity extends BaseActivity {
         startActivityForResult(intent, Constants.REQUEST_CODE_WALLET_EXPENSE_LIST);
     }
 
-
     private void showCreateNewTagAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.dialog_create_new_tag_message).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                savePersonalDetails(true);
-            }
-        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.dialog_create_new_tag_message)
+               .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int id) {
+                       savePersonalDetails(true);
+                   }
+               }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
             }

@@ -39,11 +39,13 @@ public class ExpenseDatabaseHandler {
     }
 
     public void createExpenseTable() {
-        String createUnPaidExpenseTableQuery = "CREATE TABLE IF NOT EXISTS " + Constants.DB_UNPAID_EXPENSE_TABLE_NAME + " ( " + Constants.DB_EXPENSE_PAYEE_NAME
+        String createUnPaidExpenseTableQuery =
+                "CREATE TABLE IF NOT EXISTS " + Constants.DB_UNPAID_EXPENSE_TABLE_NAME + " ( " + Constants.DB_EXPENSE_PAYEE_NAME
                 + " TEXT, " + Constants.DB_EXPENSE_AMOUNT_NAME + " INTEGER, " + Constants.DB_EXPENSE_DATE_NAME + " TEXT, "
                 + Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME + " INTEGER, " + Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME + " TEXT, "
                 + Constants.DB_EXPENSE_DESCRIPTION_NAME + " TEXT )";
-        String createPaidExpenseTableQuery = "CREATE TABLE IF NOT EXISTS " + Constants.DB_PAID_EXPENSE_TABLE_NAME + " ( " + Constants.DB_EXPENSE_PAYEE_NAME
+        String createPaidExpenseTableQuery =
+                "CREATE TABLE IF NOT EXISTS " + Constants.DB_PAID_EXPENSE_TABLE_NAME + " ( " + Constants.DB_EXPENSE_PAYEE_NAME
                 + " TEXT, " + Constants.DB_EXPENSE_AMOUNT_NAME + " INTEGER, " + Constants.DB_EXPENSE_DATE_NAME + " TEXT, "
                 + Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME + " INTEGER, " + Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME + " TEXT, "
                 + Constants.DB_EXPENSE_DESCRIPTION_NAME + " TEXT )";
@@ -56,7 +58,8 @@ public class ExpenseDatabaseHandler {
     }
 
     public void createEventExpenseTable() {
-        String createEventTableQuery = "CREATE TABLE IF NOT EXISTS " + Constants.DB_EVENT_EXPENSE_TABLE_NAME + " ( " + Constants.DB_EVENT_EXPENSE_PAYEE_NAME
+        String createEventTableQuery =
+                "CREATE TABLE IF NOT EXISTS " + Constants.DB_EVENT_EXPENSE_TABLE_NAME + " ( " + Constants.DB_EVENT_EXPENSE_PAYEE_NAME
                 + " TEXT, " + Constants.DB_EVENT_EXPENSE_AMOUNT_NAME + " INTEGER," + Constants.DB_EVENT_EXPENSE_DATE_NAME + " TEXT,"
                 + Constants.DB_EVENT_EXPENSE_EVENT_NAME + " TEXT," + Constants.DB_EVENT_EXPENSE_PAYER_NAME + " TEXT,"
                 + Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME + " TEXT )";
@@ -68,7 +71,9 @@ public class ExpenseDatabaseHandler {
     }
 
     public void createPayeeTable() {
-        String payeeCreateTableQuery = "CREATE TABLE IF NOT EXISTS " + Constants.DB_PAYEE_TABLE + " ( " + Constants.DB_PAYEE_PAYEE_NAME + " TEXT PRIMARY KEY)";
+        String payeeCreateTableQuery =
+                "CREATE TABLE IF NOT EXISTS " + Constants.DB_PAYEE_TABLE + " ( " + Constants.DB_PAYEE_PAYEE_NAME +
+                " TEXT PRIMARY KEY)";
         try {
             database.execSQL(payeeCreateTableQuery);
         } catch (SQLiteException e) {
@@ -77,7 +82,9 @@ public class ExpenseDatabaseHandler {
     }
 
     public void createEventTable() {
-        String eventCreateTableQuery = "CREATE TABLE IF NOT EXISTS " + Constants.DB_EVENT_TABLE + " ( " + Constants.DB_EVENT_EVENT_NAME + " TEXT PRIMARY KEY)";
+        String eventCreateTableQuery =
+                "CREATE TABLE IF NOT EXISTS " + Constants.DB_EVENT_TABLE + " ( " + Constants.DB_EVENT_EVENT_NAME +
+                " TEXT PRIMARY KEY)";
         try {
             database.execSQL(eventCreateTableQuery);
         } catch (SQLiteException e) {
@@ -87,13 +94,13 @@ public class ExpenseDatabaseHandler {
 
     public boolean alterExpenseTable() {
         String alterUnPaidExpenseTableQueryAmount = "ALTER TABLE " + Constants.DB_UNPAID_EXPENSE_TABLE_NAME + " ADD COLUMN "
-                + Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME + " INTEGER DEFAULT 0";
+                                                    + Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME + " INTEGER DEFAULT 0";
         String alterUnPaidExpenseTableQueryPayee = "ALTER TABLE " + Constants.DB_UNPAID_EXPENSE_TABLE_NAME + " ADD COLUMN "
-                + Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME + " TEXT";
+                                                   + Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME + " TEXT";
         String alterPaidExpenseTableQueryAmount = "ALTER TABLE " + Constants.DB_PAID_EXPENSE_TABLE_NAME + " ADD COLUMN "
-                + Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME + " INTEGER DEFAULT 0";
+                                                  + Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME + " INTEGER DEFAULT 0";
         String alterPaidExpenseTableQueryPayee = "ALTER TABLE " + Constants.DB_PAID_EXPENSE_TABLE_NAME + " ADD COLUMN "
-                + Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME + " TEXT";
+                                                 + Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME + " TEXT";
 
         try {
             database.execSQL(alterUnPaidExpenseTableQueryAmount);
@@ -109,13 +116,17 @@ public class ExpenseDatabaseHandler {
 
     public boolean updateExpenseTableForUpgradeToVersionOne() {
         String upgradeUnPaidExpenseTableQueryAmount = "UPDATE " + Constants.DB_UNPAID_EXPENSE_TABLE_NAME + " SET "
-                + Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME + " = " + Constants.DB_EXPENSE_AMOUNT_NAME;
+                                                      + Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME + " = " +
+                                                      Constants.DB_EXPENSE_AMOUNT_NAME;
         String upgradeUnPaidExpenseTableQueryPayee = "UPDATE " + Constants.DB_UNPAID_EXPENSE_TABLE_NAME + " SET "
-                + Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME + " = " + Constants.DB_EXPENSE_PAYEE_NAME;
+                                                     + Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME + " = " +
+                                                     Constants.DB_EXPENSE_PAYEE_NAME;
         String upgradePaidExpenseTableQueryAmount = "UPDATE " + Constants.DB_PAID_EXPENSE_TABLE_NAME + " SET "
-                + Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME + " = " + Constants.DB_EXPENSE_AMOUNT_NAME;
+                                                    + Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME + " = " +
+                                                    Constants.DB_EXPENSE_AMOUNT_NAME;
         String upgradePaidExpenseTableQueryPayee = "UPDATE " + Constants.DB_PAID_EXPENSE_TABLE_NAME + " SET "
-                + Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME + " = " + Constants.DB_EXPENSE_PAYEE_NAME;
+                                                   + Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME + " = " +
+                                                   Constants.DB_EXPENSE_PAYEE_NAME;
 
         try {
             database.execSQL(upgradeUnPaidExpenseTableQueryAmount);
@@ -203,8 +214,9 @@ public class ExpenseDatabaseHandler {
     }
 
     public boolean isPayeeExists(String payee) {
-        Cursor cursor = database.query(Constants.DB_PAYEE_TABLE, new String[]{Constants.DB_PAYEE_PAYEE_NAME}, Constants.DB_PAYEE_PAYEE_NAME + " = " + "'"
-                + payee.replaceAll("'", "\''") + "'", null, null, null, null, null);
+        Cursor cursor = database.query(Constants.DB_PAYEE_TABLE, new String[]{Constants.DB_PAYEE_PAYEE_NAME},
+                                       Constants.DB_PAYEE_PAYEE_NAME + " = " + "'"
+                                       + payee.replaceAll("'", "\''") + "'", null, null, null, null, null);
         boolean flag = false;
         if (cursor.getCount() > 0) {
             flag = true;
@@ -214,8 +226,9 @@ public class ExpenseDatabaseHandler {
     }
 
     public boolean isEventExists(String event) {
-        Cursor cursor = database.query(Constants.DB_EVENT_TABLE, new String[]{Constants.DB_EVENT_EVENT_NAME}, Constants.DB_EVENT_EVENT_NAME + " = " + "'"
-                + event.replaceAll("'", "\''") + "'", null, null, null, null, null);
+        Cursor cursor = database.query(Constants.DB_EVENT_TABLE, new String[]{Constants.DB_EVENT_EVENT_NAME},
+                                       Constants.DB_EVENT_EVENT_NAME + " = " + "'"
+                                       + event.replaceAll("'", "\''") + "'", null, null, null, null, null);
         boolean flag = false;
         if (cursor.getCount() > 0) {
             flag = true;
@@ -231,7 +244,8 @@ public class ExpenseDatabaseHandler {
             } else {
                 ContentValues values = new ContentValues();
                 values.put(Constants.DB_PAYEE_PAYEE_NAME, newPayee);
-                database.update(Constants.DB_PAYEE_TABLE, values, Constants.DB_PAYEE_PAYEE_NAME + " = " + "'" + oldPayee.replaceAll("'", "\''") + "'", null);
+                database.update(Constants.DB_PAYEE_TABLE, values,
+                                Constants.DB_PAYEE_PAYEE_NAME + " = " + "'" + oldPayee.replaceAll("'", "\''") + "'", null);
                 ArrayList<ExpenseDetails> expenseList = getUnPaidExpenseListForAPayee(oldPayee);
                 for (ExpenseDetails expenseDetails : expenseList) {
                     String payeeList = expenseDetails.getPayeesList();
@@ -249,9 +263,9 @@ public class ExpenseDatabaseHandler {
                     } else {
                         originalPayeeList = originalPayeeList.replace(oldPayee, newPayee);
                     }
-                    values = new ContentValues();
                     values.put(Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME, originalPayeeList);
-                    database.update(Constants.DB_UNPAID_EXPENSE_TABLE_NAME, values, Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
+                    database.update(Constants.DB_UNPAID_EXPENSE_TABLE_NAME, values,
+                                    Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
                 }
                 expenseList = getPaidExpenseListForAPayee(oldPayee);
                 for (ExpenseDetails expenseDetails : expenseList) {
@@ -264,7 +278,15 @@ public class ExpenseDatabaseHandler {
                     }
                     values = new ContentValues();
                     values.put(Constants.DB_EXPENSE_PAYEE_NAME, payeeList);
-                    database.update(Constants.DB_PAID_EXPENSE_TABLE_NAME, values, Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
+                    String originalPayeeList = expenseDetails.getPayeesList();
+                    if (Utils.getPayeeCountFromPayees(payeeList) > 1) {
+                        originalPayeeList = Utils.replacePayeeFromPayeeList(originalPayeeList, newPayee, oldPayee);
+                    } else {
+                        originalPayeeList = originalPayeeList.replace(oldPayee, newPayee);
+                    }
+                    values.put(Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME, originalPayeeList);
+                    database.update(Constants.DB_PAID_EXPENSE_TABLE_NAME, values,
+                                    Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
                 }
                 ArrayList<ExpenseDetails> eventExpenseList = getAllEventExpenseList();
                 for (ExpenseDetails eventExpense : eventExpenseList) {
@@ -282,7 +304,8 @@ public class ExpenseDatabaseHandler {
                     values = new ContentValues();
                     values.put(Constants.DB_EVENT_EXPENSE_PAYER_NAME, payer);
                     values.put(Constants.DB_EVENT_EXPENSE_PAYEE_NAME, payeeList);
-                    database.update(Constants.DB_EVENT_EXPENSE_TABLE_NAME, values, Constants.DB_EVENT_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
+                    database.update(Constants.DB_EVENT_EXPENSE_TABLE_NAME, values,
+                                    Constants.DB_EVENT_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
                 }
             }
         }
@@ -295,7 +318,8 @@ public class ExpenseDatabaseHandler {
             ContentValues values = new ContentValues();
             values.put(Constants.DB_EVENT_EVENT_NAME, newEvent);
             try {
-                database.update(Constants.DB_EVENT_TABLE, values, Constants.DB_EVENT_EVENT_NAME + " = " + "'" + oldEvent.replaceAll("'", "\''") + "'", null);
+                database.update(Constants.DB_EVENT_TABLE, values,
+                                Constants.DB_EVENT_EVENT_NAME + " = " + "'" + oldEvent.replaceAll("'", "\''") + "'", null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -303,7 +327,7 @@ public class ExpenseDatabaseHandler {
             values.put(Constants.DB_EVENT_EXPENSE_EVENT_NAME, newEvent);
             try {
                 database.update(Constants.DB_EVENT_EXPENSE_TABLE_NAME, values,
-                        Constants.DB_EVENT_EXPENSE_EVENT_NAME + " = " + "'" + oldEvent.replaceAll("'", "\''") + "'", null);
+                                Constants.DB_EVENT_EXPENSE_EVENT_NAME + " = " + "'" + oldEvent.replaceAll("'", "\''") + "'", null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -319,7 +343,8 @@ public class ExpenseDatabaseHandler {
         values.put(Constants.DB_EXPENSE_DESCRIPTION_NAME, expenseDetails.getDescription());
         if (!(customDate.equals("") || customDate.equals("0")))
             values.put(Constants.DB_EXPENSE_DATE_NAME, customDate);
-        database.update(Constants.DB_UNPAID_EXPENSE_TABLE_NAME, values, Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + expenseDetails.getDate() + "'", null);
+        database.update(Constants.DB_UNPAID_EXPENSE_TABLE_NAME, values,
+                        Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + expenseDetails.getDate() + "'", null);
     }
 
     public void updateEventExpenseFromDate(ExpenseDetails eventExpenseDetails, String customDate) {
@@ -332,13 +357,15 @@ public class ExpenseDatabaseHandler {
         if (!(customDate.equals("") || customDate.equals("0")))
             values.put(Constants.DB_EVENT_EXPENSE_DATE_NAME, customDate);
         database.update(Constants.DB_EVENT_EXPENSE_TABLE_NAME, values,
-                Constants.DB_EVENT_EXPENSE_DATE_NAME + " = " + "'" + eventExpenseDetails.getDate() + "'", null);
+                        Constants.DB_EVENT_EXPENSE_DATE_NAME + " = " + "'" + eventExpenseDetails.getDate() + "'", null);
     }
 
     public ArrayList<ExpenseDetails> getAllUnPaidExpenseList() {
         Cursor cursor = database.query(Constants.DB_UNPAID_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EXPENSE_PAYEE_NAME,
-                        Constants.DB_EXPENSE_AMOUNT_NAME, Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME, Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME, Constants.DB_EXPENSE_DATE_NAME, Constants.DB_EXPENSE_DESCRIPTION_NAME}, null, null, null, null,
-                Constants.DB_EXPENSE_DATE_NAME + " DESC");
+                                               Constants.DB_EXPENSE_AMOUNT_NAME, Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME,
+                                               Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME, Constants.DB_EXPENSE_DATE_NAME,
+                                               Constants.DB_EXPENSE_DESCRIPTION_NAME}, null, null, null, null,
+                                       Constants.DB_EXPENSE_DATE_NAME + " DESC");
         ArrayList<ExpenseDetails> expenseList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -357,8 +384,11 @@ public class ExpenseDatabaseHandler {
     }
 
     public ArrayList<ExpenseDetails> getAllPaidExpenseList() {
-        Cursor cursor = database.query(Constants.DB_PAID_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EXPENSE_PAYEE_NAME, Constants.DB_EXPENSE_AMOUNT_NAME,
-                Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME, Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME, Constants.DB_EXPENSE_DATE_NAME, Constants.DB_EXPENSE_DESCRIPTION_NAME}, null, null, null, null, Constants.DB_EXPENSE_DATE_NAME + " DESC");
+        Cursor cursor = database.query(Constants.DB_PAID_EXPENSE_TABLE_NAME,
+                                       new String[]{Constants.DB_EXPENSE_PAYEE_NAME, Constants.DB_EXPENSE_AMOUNT_NAME,
+                                               Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME, Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME,
+                                               Constants.DB_EXPENSE_DATE_NAME, Constants.DB_EXPENSE_DESCRIPTION_NAME}, null, null,
+                                       null, null, Constants.DB_EXPENSE_DATE_NAME + " DESC");
         ArrayList<ExpenseDetails> expenseList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -378,9 +408,11 @@ public class ExpenseDatabaseHandler {
 
     public ArrayList<ExpenseDetails> getAllEventExpenseList() {
         Cursor cursor = database.query(Constants.DB_EVENT_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EVENT_EXPENSE_AMOUNT_NAME,
-                Constants.DB_EVENT_EXPENSE_EVENT_NAME, Constants.DB_EVENT_EXPENSE_DATE_NAME, Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME,
-                Constants.DB_EVENT_EXPENSE_PAYER_NAME, Constants.DB_EVENT_EXPENSE_PAYEE_NAME}, null, null, null, null, Constants.DB_EVENT_EXPENSE_DATE_NAME
-                + " DESC");
+                Constants.DB_EVENT_EXPENSE_EVENT_NAME, Constants.DB_EVENT_EXPENSE_DATE_NAME,
+                Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME,
+                Constants.DB_EVENT_EXPENSE_PAYER_NAME, Constants.DB_EVENT_EXPENSE_PAYEE_NAME}, null, null, null, null,
+                                       Constants.DB_EVENT_EXPENSE_DATE_NAME
+                                       + " DESC");
         ArrayList<ExpenseDetails> eventExpenseList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -400,8 +432,11 @@ public class ExpenseDatabaseHandler {
 
     public ArrayList<ExpenseDetails> getUnPaidExpenseListForAPayee(String payee) {
         Cursor cursor = database.query(Constants.DB_UNPAID_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EXPENSE_PAYEE_NAME,
-                Constants.DB_EXPENSE_AMOUNT_NAME, Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME, Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME, Constants.DB_EXPENSE_DATE_NAME, Constants.DB_EXPENSE_DESCRIPTION_NAME}, Constants.DB_EXPENSE_PAYEE_NAME
-                + " LIKE " + "'%" + payee.replaceAll("'", "\''") + "%'", null, null, null, Constants.DB_EXPENSE_DATE_NAME + " DESC");
+                Constants.DB_EXPENSE_AMOUNT_NAME, Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME, Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME,
+                Constants.DB_EXPENSE_DATE_NAME, Constants.DB_EXPENSE_DESCRIPTION_NAME}, Constants.DB_EXPENSE_PAYEE_NAME
+                                                                                        + " LIKE " + "'%" +
+                                                                                        payee.replaceAll("'", "\''") + "%'", null,
+                                       null, null, Constants.DB_EXPENSE_DATE_NAME + " DESC");
         ArrayList<ExpenseDetails> newExpenseList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -422,10 +457,14 @@ public class ExpenseDatabaseHandler {
     }
 
     public ArrayList<ExpenseDetails> getPaidExpenseListForAPayee(String payee) {
-        Cursor cursor = database.query(Constants.DB_PAID_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EXPENSE_PAYEE_NAME, Constants.DB_EXPENSE_AMOUNT_NAME, Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME,
-                        Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME, Constants.DB_EXPENSE_DATE_NAME, Constants.DB_EXPENSE_DESCRIPTION_NAME},
-                Constants.DB_EXPENSE_PAYEE_NAME + " LIKE " + "'%" + payee.replaceAll("'", "\''") + "%'", null, null, null, Constants.DB_EXPENSE_DATE_NAME
-                        + " DESC");
+        Cursor cursor = database.query(Constants.DB_PAID_EXPENSE_TABLE_NAME,
+                                       new String[]{Constants.DB_EXPENSE_PAYEE_NAME, Constants.DB_EXPENSE_AMOUNT_NAME,
+                                               Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME,
+                                               Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME, Constants.DB_EXPENSE_DATE_NAME,
+                                               Constants.DB_EXPENSE_DESCRIPTION_NAME},
+                                       Constants.DB_EXPENSE_PAYEE_NAME + " LIKE " + "'%" + payee.replaceAll("'", "\''") + "%'", null,
+                                       null, null, Constants.DB_EXPENSE_DATE_NAME
+                                                   + " DESC");
         ArrayList<ExpenseDetails> newExpenseList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -447,10 +486,13 @@ public class ExpenseDatabaseHandler {
 
     public ArrayList<ExpenseDetails> getEventExpenseListForAPayerForAEvent(String eventName, String payer) {
         Cursor cursor = database.query(Constants.DB_EVENT_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EVENT_EXPENSE_AMOUNT_NAME,
-                        Constants.DB_EVENT_EXPENSE_EVENT_NAME, Constants.DB_EVENT_EXPENSE_DATE_NAME, Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME,
-                        Constants.DB_EVENT_EXPENSE_PAYER_NAME, Constants.DB_EVENT_EXPENSE_PAYEE_NAME}, Constants.DB_EVENT_EXPENSE_PAYER_NAME + "  LIKE " + "'%"
-                        + payer.replaceAll("'", "\''") + "%'" + " AND " + Constants.DB_EVENT_EXPENSE_EVENT_NAME + " = " + "'" + eventName.replaceAll("'", "\''") + "'",
-                null, null, null, Constants.DB_EVENT_EXPENSE_DATE_NAME + " DESC");
+                                               Constants.DB_EVENT_EXPENSE_EVENT_NAME, Constants.DB_EVENT_EXPENSE_DATE_NAME,
+                                               Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME,
+                                               Constants.DB_EVENT_EXPENSE_PAYER_NAME, Constants.DB_EVENT_EXPENSE_PAYEE_NAME},
+                                       Constants.DB_EVENT_EXPENSE_PAYER_NAME + "  LIKE " + "'%"
+                                       + payer.replaceAll("'", "\''") + "%'" + " AND " + Constants.DB_EVENT_EXPENSE_EVENT_NAME +
+                                       " = " + "'" + eventName.replaceAll("'", "\''") + "'",
+                                       null, null, null, Constants.DB_EVENT_EXPENSE_DATE_NAME + " DESC");
         ArrayList<ExpenseDetails> eventExpenseList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -470,10 +512,13 @@ public class ExpenseDatabaseHandler {
 
     public ArrayList<ExpenseDetails> getEventExpenseListForAPayeeForAEvent(String eventName, String payee) {
         Cursor cursor = database.query(Constants.DB_EVENT_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EVENT_EXPENSE_AMOUNT_NAME,
-                        Constants.DB_EVENT_EXPENSE_EVENT_NAME, Constants.DB_EVENT_EXPENSE_DATE_NAME, Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME,
-                        Constants.DB_EVENT_EXPENSE_PAYER_NAME, Constants.DB_EVENT_EXPENSE_PAYEE_NAME}, Constants.DB_EVENT_EXPENSE_PAYEE_NAME + "  LIKE " + "'%"
-                        + payee.replaceAll("'", "\''") + "%'" + " AND " + Constants.DB_EVENT_EXPENSE_EVENT_NAME + " = " + "'" + eventName.replaceAll("'", "\''") + "'",
-                null, null, null, Constants.DB_EVENT_EXPENSE_DATE_NAME + " DESC");
+                                               Constants.DB_EVENT_EXPENSE_EVENT_NAME, Constants.DB_EVENT_EXPENSE_DATE_NAME,
+                                               Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME,
+                                               Constants.DB_EVENT_EXPENSE_PAYER_NAME, Constants.DB_EVENT_EXPENSE_PAYEE_NAME},
+                                       Constants.DB_EVENT_EXPENSE_PAYEE_NAME + "  LIKE " + "'%"
+                                       + payee.replaceAll("'", "\''") + "%'" + " AND " + Constants.DB_EVENT_EXPENSE_EVENT_NAME +
+                                       " = " + "'" + eventName.replaceAll("'", "\''") + "'",
+                                       null, null, null, Constants.DB_EVENT_EXPENSE_DATE_NAME + " DESC");
         ArrayList<ExpenseDetails> eventExpenseList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -493,7 +538,7 @@ public class ExpenseDatabaseHandler {
 
     public ArrayList<String> getAllPayees() {
         Cursor cursor = database.query(Constants.DB_PAYEE_TABLE, new String[]{Constants.DB_PAYEE_PAYEE_NAME}, null, null, null, null,
-                Constants.DB_PAYEE_PAYEE_NAME + " ASC", null);
+                                       Constants.DB_PAYEE_PAYEE_NAME + " ASC", null);
         ArrayList<String> payeeList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -506,7 +551,7 @@ public class ExpenseDatabaseHandler {
 
     public ArrayList<String> getAllEvents() {
         Cursor cursor = database.query(Constants.DB_EVENT_TABLE, new String[]{Constants.DB_EVENT_EVENT_NAME}, null, null, null, null,
-                Constants.DB_EVENT_EVENT_NAME + " ASC", null);
+                                       Constants.DB_EVENT_EVENT_NAME + " ASC", null);
         ArrayList<String> eventList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -522,7 +567,8 @@ public class ExpenseDatabaseHandler {
         Cursor cursor = database.query(Constants.DB_UNPAID_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EXPENSE_PAYEE_NAME,
                 Constants.DB_EXPENSE_AMOUNT_NAME, Constants.DB_EXPENSE_ORIGINAL_PAYEE_NAME, Constants.DB_EXPENSE_ORIGINAL_AMOUNT_NAME,
                 Constants.DB_EXPENSE_DATE_NAME, Constants.DB_EXPENSE_DESCRIPTION_NAME}, Constants.DB_EXPENSE_DATE_NAME
-                + " = " + "'" + date + "'", null, null, null, Constants.DB_EXPENSE_DATE_NAME + " DESC");
+                                                                                        + " = " + "'" + date + "'", null, null, null,
+                                       Constants.DB_EXPENSE_DATE_NAME + " DESC");
         if (cursor.moveToFirst()) {
             do {
                 expenseDetails = new ExpenseDetails();
@@ -542,8 +588,9 @@ public class ExpenseDatabaseHandler {
         ExpenseDetails eventExpense = null;
         Cursor cursor = database.query(Constants.DB_EVENT_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EVENT_EXPENSE_PAYER_NAME,
                 Constants.DB_EVENT_EXPENSE_PAYEE_NAME, Constants.DB_EVENT_EXPENSE_AMOUNT_NAME, Constants.DB_EVENT_EXPENSE_DATE_NAME,
-                Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME, Constants.DB_EVENT_EXPENSE_EVENT_NAME}, Constants.DB_EVENT_EXPENSE_DATE_NAME + " = " + "'" + date
-                + "'", null, null, null, Constants.DB_EVENT_EXPENSE_DATE_NAME + " DESC");
+                Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME, Constants.DB_EVENT_EXPENSE_EVENT_NAME},
+                                       Constants.DB_EVENT_EXPENSE_DATE_NAME + " = " + "'" + date
+                                       + "'", null, null, null, Constants.DB_EVENT_EXPENSE_DATE_NAME + " DESC");
         if (cursor.moveToFirst()) {
             do {
                 eventExpense = new ExpenseDetails();
@@ -613,7 +660,8 @@ public class ExpenseDatabaseHandler {
         ArrayList<ExpenseDetails> eventExpenseList = getAllEventExpenseForAEvent(eventName);
         int[] payerAmountList = new int[payerList.size()];
         for (ExpenseDetails eventExpense : eventExpenseList) {
-            payerAmountList[payerList.indexOf(eventExpense.getPayersList())] = payerAmountList[payerList.indexOf(eventExpense.getPayersList())]
+            payerAmountList[payerList.indexOf(eventExpense.getPayersList())] =
+                    payerAmountList[payerList.indexOf(eventExpense.getPayersList())]
                     + Integer.parseInt(eventExpense.getAmount());
         }
         for (int i = 0; i < payerAmountList.length; i++) {
@@ -627,8 +675,10 @@ public class ExpenseDatabaseHandler {
     }
 
     public ArrayList<String> getAllPayersForAEvent(String eventName) {
-        Cursor cursor = database.query(true, Constants.DB_EVENT_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EVENT_EXPENSE_PAYER_NAME},
-                Constants.DB_EVENT_EXPENSE_EVENT_NAME + " = " + "'" + eventName.replaceAll("'", "\''") + "'", null, null, null, null, null);
+        Cursor cursor =
+                database.query(true, Constants.DB_EVENT_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EVENT_EXPENSE_PAYER_NAME},
+                               Constants.DB_EVENT_EXPENSE_EVENT_NAME + " = " + "'" + eventName.replaceAll("'", "\''") + "'", null,
+                               null, null, null, null);
         ArrayList<String> payerStrings = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -659,7 +709,8 @@ public class ExpenseDatabaseHandler {
                     personAmountList.add(0);
                 }
                 personAmountList.set(personsNameList.indexOf(payer),
-                        personAmountList.get(personsNameList.indexOf(payer)) + Integer.parseInt(eventExpense.getAmount()));
+                                     personAmountList.get(personsNameList.indexOf(payer)) +
+                                     Integer.parseInt(eventExpense.getAmount()));
             }
         }
         for (int i = 0; i < personAmountList.size(); i++) {
@@ -725,10 +776,12 @@ public class ExpenseDatabaseHandler {
 
     public ArrayList<ExpenseDetails> getAllEventExpenseForAEvent(String eventName) {
         Cursor cursor = database.query(Constants.DB_EVENT_EXPENSE_TABLE_NAME, new String[]{Constants.DB_EVENT_EXPENSE_AMOUNT_NAME,
-                        Constants.DB_EVENT_EXPENSE_EVENT_NAME, Constants.DB_EVENT_EXPENSE_DATE_NAME, Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME,
-                        Constants.DB_EVENT_EXPENSE_PAYER_NAME, Constants.DB_EVENT_EXPENSE_PAYEE_NAME},
-                Constants.DB_EVENT_EXPENSE_EVENT_NAME + " = " + "'" + eventName.replaceAll("'", "\''") + "'", null, null, null,
-                Constants.DB_EVENT_EXPENSE_DATE_NAME + " DESC");
+                                               Constants.DB_EVENT_EXPENSE_EVENT_NAME, Constants.DB_EVENT_EXPENSE_DATE_NAME,
+                                               Constants.DB_EVENT_EXPENSE_DESCRIPTION_NAME,
+                                               Constants.DB_EVENT_EXPENSE_PAYER_NAME, Constants.DB_EVENT_EXPENSE_PAYEE_NAME},
+                                       Constants.DB_EVENT_EXPENSE_EVENT_NAME + " = " + "'" + eventName.replaceAll("'", "\''") + "'",
+                                       null, null, null,
+                                       Constants.DB_EVENT_EXPENSE_DATE_NAME + " DESC");
         ArrayList<ExpenseDetails> eventExpenseList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -756,8 +809,10 @@ public class ExpenseDatabaseHandler {
     }
 
     public void deleteUnPaidExpense(ExpenseDetails expenseDetails) {
-        database.delete(Constants.DB_UNPAID_EXPENSE_TABLE_NAME, Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + expenseDetails.getDate() + "'" + " AND "
-                + Constants.DB_EXPENSE_PAYEE_NAME + " = " + "'" + expenseDetails.getPayeesList().replaceAll("'", "\''") + "'", null);
+        database.delete(Constants.DB_UNPAID_EXPENSE_TABLE_NAME,
+                        Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + expenseDetails.getDate() + "'" + " AND "
+                        + Constants.DB_EXPENSE_PAYEE_NAME + " = " + "'" + expenseDetails.getPayeesList().replaceAll("'", "\''") + "'",
+                        null);
     }
 
     public boolean deletePayee(String payee) {
@@ -770,7 +825,8 @@ public class ExpenseDatabaseHandler {
                     deletePaidExpense(expenseDetails);
                 }
             }
-            database.delete(Constants.DB_PAYEE_TABLE, Constants.DB_PAYEE_PAYEE_NAME + " = " + "'" + payee.replaceAll("'", "\''") + "'", null);
+            database.delete(Constants.DB_PAYEE_TABLE, Constants.DB_PAYEE_PAYEE_NAME + " = " + "'" + payee.replaceAll("'", "\''") + "'",
+                            null);
         }
         return !isPayeeInUse;
     }
@@ -796,21 +852,26 @@ public class ExpenseDatabaseHandler {
 
     public void deleteEventName(String eventName) {
         deleteAllExpensesForAEvent(eventName);
-        database.delete(Constants.DB_EVENT_TABLE, Constants.DB_EVENT_EVENT_NAME + " = " + "'" + eventName.replaceAll("'", "\''") + "'", null);
+        database.delete(Constants.DB_EVENT_TABLE, Constants.DB_EVENT_EVENT_NAME + " = " + "'" + eventName.replaceAll("'", "\''") + "'",
+                        null);
     }
 
     public void deleteAllExpensesForAEvent(String eventName) {
-        database.delete(Constants.DB_EVENT_EXPENSE_TABLE_NAME, Constants.DB_EVENT_EXPENSE_EVENT_NAME + " = " + "'" + eventName.replaceAll("'", "\''") + "'",
-                null);
+        database.delete(Constants.DB_EVENT_EXPENSE_TABLE_NAME,
+                        Constants.DB_EVENT_EXPENSE_EVENT_NAME + " = " + "'" + eventName.replaceAll("'", "\''") + "'",
+                        null);
     }
 
     public void deletePaidExpense(ExpenseDetails expenseDetails) {
-        database.delete(Constants.DB_PAID_EXPENSE_TABLE_NAME, Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + expenseDetails.getDate() + "'" + " AND "
-                + Constants.DB_EXPENSE_PAYEE_NAME + " = " + "'" + expenseDetails.getPayeesList().replaceAll("'", "\''") + "'", null);
+        database.delete(Constants.DB_PAID_EXPENSE_TABLE_NAME,
+                        Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + expenseDetails.getDate() + "'" + " AND "
+                        + Constants.DB_EXPENSE_PAYEE_NAME + " = " + "'" + expenseDetails.getPayeesList().replaceAll("'", "\''") + "'",
+                        null);
     }
 
     public void deleteEventExpenseForAPayerForAEvent(ExpenseDetails eventExpense) {
-        database.delete(Constants.DB_EVENT_EXPENSE_TABLE_NAME, Constants.DB_EVENT_EXPENSE_DATE_NAME + " = " + "'" + eventExpense.getDate() + "'", null);
+        database.delete(Constants.DB_EVENT_EXPENSE_TABLE_NAME,
+                        Constants.DB_EVENT_EXPENSE_DATE_NAME + " = " + "'" + eventExpense.getDate() + "'", null);
     }
 
     public void markExpenseAsPaid(ExpenseDetails expenseDetails) {
@@ -884,7 +945,8 @@ public class ExpenseDatabaseHandler {
             try {
                 if (!dateString.matches(regex)) {
                     values.put(Constants.DB_EXPENSE_DATE_NAME, Utils.getMilliesFromDate(dateString));
-                    database.update(Constants.DB_UNPAID_EXPENSE_TABLE_NAME, values, Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
+                    database.update(Constants.DB_UNPAID_EXPENSE_TABLE_NAME, values,
+                                    Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -897,7 +959,8 @@ public class ExpenseDatabaseHandler {
             try {
                 if (!dateString.matches(regex)) {
                     values.put(Constants.DB_EXPENSE_DATE_NAME, Utils.getMilliesFromDate(dateString));
-                    database.update(Constants.DB_PAID_EXPENSE_TABLE_NAME, values, Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
+                    database.update(Constants.DB_PAID_EXPENSE_TABLE_NAME, values,
+                                    Constants.DB_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -910,7 +973,8 @@ public class ExpenseDatabaseHandler {
             try {
                 if (!dateString.matches(regex)) {
                     values.put(Constants.DB_EVENT_EXPENSE_DATE_NAME, Utils.getMilliesFromDate(dateString));
-                    database.update(Constants.DB_EVENT_EXPENSE_TABLE_NAME, values, Constants.DB_EVENT_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
+                    database.update(Constants.DB_EVENT_EXPENSE_TABLE_NAME, values,
+                                    Constants.DB_EVENT_EXPENSE_DATE_NAME + " = " + "'" + dateString + "'", null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
